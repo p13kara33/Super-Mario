@@ -25,6 +25,9 @@ body {
 			create : create,
 			update : update
 		}, false, false);
+		
+		var score=0;
+		var scoreText;
 
 		function preload() {
 
@@ -42,6 +45,8 @@ body {
 			this.load.tilemap('level', 'assets/super_mario_map.json', null,
 					Phaser.Tilemap.TILED_JSON);
 		}
+		
+		
 
 		function create() {
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
@@ -89,6 +94,8 @@ body {
 			game.camera.follow(player);
 
 			cursors = game.input.keyboard.createCursorKeys();
+			
+			scoreText = game.add.text(16,16,'Score:0',{fontSize:'16px',fill:'#FF0000'});
 		}
 
 		function update() {
@@ -131,6 +138,12 @@ body {
 
 		function coinOverlap(player, coin) {
 			coin.kill();
+			
+			score+=10;
+			scoreText.text='Score:' + score;
+			
+			var audio = new Audio('audio/coin.wav');
+ -                        audio.play()
 		}
 
 		function goombaOverlap(player, goomba) {
