@@ -28,6 +28,9 @@ body {
 		
 		var score=0;
 		var scoreText;
+		var life = 3;
+                var lifeText;
+                var gameoverText;
 
 		function preload() {
 
@@ -96,6 +99,10 @@ body {
 			cursors = game.input.keyboard.createCursorKeys();
 			
 			scoreText = game.add.text(16,16,'Score:0',{fontSize:'16px',fill:'#FF0000'});
+			scoreText.fixedToCamera = true;
+             		
+			lifeText = game.add.text(16, 30, 'life: 3', { fontSize: '16px', fill: '#FF0000' });
+			lifeText.fixedToCamera = true;
 		}
 
 		function update() {
@@ -156,10 +163,18 @@ body {
 					goomba.kill();
 				});
 			} else {
-				player.frame = 6;
-				player.body.enable = false;
-				player.animations.stop();
-				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+				life--;
+                                lifeText.text = 'life: ' +life;
+				player.x=player.x-30;
+			       var snd =game.add.audio("stomp");
+				snd.play();}
+				if(life==0){
+					player.frame = 6;
+					player.body.enable = false;
+					player.animations.stop();
+					game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+					gameoverText = game.add.text(20, 100, 'GAME OVER', { fontSize: '32px', fill: '#FF0000' });
+			        	gameoverText.fixedToCamera = true;			     
 					game.paused = true;
 				});
 			}
